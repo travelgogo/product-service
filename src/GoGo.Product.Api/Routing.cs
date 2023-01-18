@@ -1,5 +1,6 @@
 using GoGo.Product.Application.Tours.Commands.CreateTour;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoGo.Product.Api
 {
@@ -7,17 +8,17 @@ namespace GoGo.Product.Api
     {
         public static void MapAppRouting(this WebApplication app)
         {
-            app.MapGet("tours/id", (int id) => 
+            app.MapGet("tours/{id}", [Authorize("HasAdminRole")] (int id) => 
             {
                 return "tours";
             });
 
-            app.MapPost("tours", async (CreateTourRequest request, IMediator _mediator) => 
+            app.MapPost("tours", [Authorize("HasAdminRole")] async (CreateTourRequest request, IMediator _mediator) => 
             {
                 var result = await _mediator.Send(request);
 
                 if(result.IsSuccess)
-                    return Results.Created("tours", request);
+                    return Results.Created("tours", result.Message);
                     
                 return Results.BadRequest(result.Message);
             });

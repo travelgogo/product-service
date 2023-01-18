@@ -11,6 +11,9 @@ namespace GoGo.Product.Domain.Entities
         public int RemainSlots { get; set; }
         public int TourId { get; set; }
         public virtual Tour? Tour { get; set; }
-
+        public decimal AdultPrice { get; set; }
+        public decimal? ChildrenUnder2Price { get; set; }
+        public decimal? ChildrenFrom2To5Price { get; set; }
+        public decimal? ChildrenFrom5To11Price { get; set; }
     }
 }
