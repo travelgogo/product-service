@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using GoGo.Product.Domain.Repos;
+using GoGo.Product.Application.Shared.Abstraction;
+using Azure.Messaging.ServiceBus;
+using GoGo.Product.Infastructure.ServiceBus;
 
 namespace GoGo.Product.Infastructure
 {
@@ -15,6 +18,13 @@ namespace GoGo.Product.Infastructure
                 options.UseSqlServer(configuration.GetConnectionString("ProductConection"));
             });
             
+            services.AddSingleton(service =>
+            {
+                var configuration = service.GetRequiredService<IConfiguration>();
+                var serviceBusSend = configuration["ServiceBusSend"];
+                return new ServiceBusClient(serviceBusSend);
+            });
+            services.AddSingleton<IServiceBusDispatcher, ServiceBusDispatcher>();
             services.AddScoped(typeof(IRepository<>), typeof(ProductRepository<>));
             services.AddScoped<IReadDb, ReadDb>();
             services.AddScoped<IWriteDb, WriteDb>();
