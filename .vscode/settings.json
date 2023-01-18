@@ -2,5 +2,10 @@
     "files.exclude": {
         "**/bin": true,
         "**/obj": true
-    }
+    },
+    "azureFunctions.deploySubpath": "src\\GoGo.Product.Function/bin/Release/net6.0/publish",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "publish (functions)"
 }
