@@ -48,7 +48,7 @@ namespace GoGo.Product.Infastructure.Data
 
         public async Task<int> SaveChangeAsync()
         {
-            return await _productDbContext.SaveChangesAsync();
+            return await _productDbContext.SaveChangesAsync(CancellationToken.None);
         }
 
         public async Task<int> SaveChangeAsync(CancellationToken cancellationToken)

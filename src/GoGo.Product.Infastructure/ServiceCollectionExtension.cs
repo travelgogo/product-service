@@ -27,7 +27,7 @@ namespace GoGo.Product.Infastructure
             services.AddSingleton<IServiceBusDispatcher, ServiceBusDispatcher>();
             services.AddScoped(typeof(IRepository<>), typeof(ProductRepository<>));
             services.AddScoped<IReadDb, ReadDb>();
-            services.AddScoped<IWriteDb, WriteDb>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

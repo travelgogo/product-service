@@ -26,7 +26,7 @@ namespace GoGo.Product.Infastructure.Data
 
         public DbSet<TourBooking>? TourBookings { get; set; }
 
-        public DbSet<TourHasStartDate>? TourHasStartDates { get; set; }
+        public DbSet<TourStartDate>? TourStartDates { get; set; }
 
         public DbSet<TourRating>? TourRatings { get; set; }
 

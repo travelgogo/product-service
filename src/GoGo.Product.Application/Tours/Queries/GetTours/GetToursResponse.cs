@@ -1,13 +1,21 @@
-﻿using GoGo.Product.Domain.Bases;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace GoGo.Product.Domain.Entities
+namespace GoGo.Product.Application.Tours.Queries.GetTours
 {
-    public class Tour : BaseEntity
+    public class GetToursResponse
     {
+        public IEnumerable<TourItem> Tours { get; set; } = Enumerable.Empty<TourItem>();
+    }
+
+    public class TourItem
+    {
+        public int Id { get; set; }
         public string? Code { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
-        public string? Schedule { get; set; }
         public string? Detail { get; set; }
         public string? Note { get; set; }
         public int TourDay { get; set; }
@@ -24,9 +32,7 @@ namespace GoGo.Product.Domain.Entities
         public string? ThumbnailImage { get; set; }
         public string? Avatar { get; set; }
         public string? SeoLink { get; set; }
-        public int Slot { get; set; }
         public int TravelLocationId { get; set; }
-        public virtual ICollection<TourRating>? TourRatings { get; set; }
-        public virtual ICollection<TourStartDate>? TourStartDates { get; set; }
+        public int Slot { get; set; }
     }
 }

@@ -68,14 +68,24 @@
 			}
 		},
 		{
-			"type": "func",
-			"dependsOn": "build (functions)",
-			"options": {
-				"cwd": "${workspaceFolder}/src\\GoGo.Product.Function/bin/Debug/net6.0"
-			},
-			"command": "host start",
-			"isBackground": true,
-			"problemMatcher": "$func-dotnet-watch"
-		}
+            "label": "build.api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/GoGo.Product.Api/GoGo.Product.Api.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        },
+		{
+            "label": "publish.api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/GoGo.Product.Api/GoGo.Product.Api.csproj"
+            ],
+            "problemMatcher": "$tsc"
+        }
 	]
 }

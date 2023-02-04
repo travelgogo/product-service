@@ -3,13 +3,13 @@ using GoGo.Product.Domain.Repos;
 
 namespace GoGo.Product.Infastructure.Data
 {
-    public class WriteDb : IWriteDb
+    public class UnitOfWork : IUnitOfWork
     {
         
         private readonly ProductDbContext _productDbContext;
         private readonly Dictionary<Type, object> _repos;
 
-        public WriteDb(ProductDbContext productDbContext)
+        public UnitOfWork(ProductDbContext productDbContext)
         {
             _productDbContext = productDbContext;
             _repos = new Dictionary<Type, object>();

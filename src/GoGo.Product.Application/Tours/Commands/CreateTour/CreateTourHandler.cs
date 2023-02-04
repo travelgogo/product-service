@@ -6,19 +6,19 @@ namespace GoGo.Product.Application.Tours.Commands.CreateTour
 {
     public class CreateTourHandler : IRequestHandler<CreateTourRequest, CreateTourResponse>
     {
-        private readonly IWriteDb _writeDb;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateTourHandler(IWriteDb writeDb)
+        public CreateTourHandler(IUnitOfWork unitOfWork)
         {
-            _writeDb = writeDb;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<CreateTourResponse> Handle(CreateTourRequest request, CancellationToken cancellationToken)
         {
             var tour = MapTour(request);
-            await _writeDb.Repo<Tour>().AddAsync(tour);
-            await _writeDb.SaveChangeAsync(CancellationToken.None);
-            return await Task.FromResult(new CreateTourResponse(true, "Create tour successfully", 201));
+            await _unitOfWork.Repo<Tour>().AddAsync(tour);
+            await _unitOfWork.SaveChangeAsync(CancellationToken.None);
+            return new CreateTourResponse(true, "Create tour successfully", 201);
         }
 
         private static Tour MapTour(CreateTourRequest request)
@@ -47,16 +47,17 @@ namespace GoGo.Product.Application.Tours.Commands.CreateTour
                 TravelLocationId = request.TravelLocationId,
                 UtcDateCreated = DateTime.Now,
                 Slot = request.Slot,
-                TourHasStartDates = request.TourStartDates.Select(x => new TourHasStartDate
+                Schedule = request.Schedule,
+                TourStartDates = request.TourStartDates.Select(x => new TourStartDate
                 {
-                    Status = x.Status,
+                    // Status = x.Status,
                     Description = x.Description,
                     StartDate = x.StartDate,
                     AdultPrice = x.AdultPrice,
                     ChildrenFrom2To5Price = x.ChildrenFrom2To5Price,
                     ChildrenFrom5To11Price = x.ChildrenFrom5To11Price,
                     ChildrenUnder2Price = x.ChildrenUnder2Price,
-                    RemainSlots = request.Slot
+                    RemainSlot = request.Slot
                 }).ToList()
             };
         }

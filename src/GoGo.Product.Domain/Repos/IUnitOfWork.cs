@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GoGo.Product.Domain.Repos
 {
-    public interface IWriteDb : IBaseDb
+    public interface IUnitOfWork : IBaseDb
     {
         
     }

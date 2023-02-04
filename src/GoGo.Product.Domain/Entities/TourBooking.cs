@@ -6,7 +6,7 @@ namespace GoGo.Product.Domain.Entities
     {
         public string? Code { get; set; }
         public int TourId { get; set; }
-        public int TourHasStartDateId { get; set; }
+        public int TourStartDateId { get; set; }
         public DateTime BookingDate { get; set; }
         public string? BookerFullName { get; set; }
         public string? BookerEmail { get; set; }

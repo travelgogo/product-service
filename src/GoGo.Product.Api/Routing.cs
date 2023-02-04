@@ -1,4 +1,5 @@
 using GoGo.Product.Application.Tours.Commands.CreateTour;
+using GoGo.Product.Application.Tours.Queries.GetTours;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -13,7 +14,14 @@ namespace GoGo.Product.Api
                 return "tours";
             });
 
-            app.MapPost("tours", [Authorize("HasAdminRole")] async (CreateTourRequest request, IMediator _mediator) => 
+            app.MapGet("tours", [Authorize] async (IMediator _mediator) => 
+            {
+                var request = new GetToursRequest();
+                var res = await _mediator.Send(request);
+                return Results.Ok(res);
+            });
+
+            app.MapPost("tours", [Authorize] async (CreateTourRequest request, IMediator _mediator) => 
             {
                 var result = await _mediator.Send(request);
 

@@ -4,6 +4,7 @@ using GoGo.Product.Infastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoGo.Product.Infastructure.Data.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    partial class ProductDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230204135520_AddColumn")]
+    partial class AddColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,10 +156,10 @@ namespace GoGo.Product.Infastructure.Data.Migrations
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("TourId")
+                    b.Property<int>("TourHasStartDateId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TourStartDateId")
+                    b.Property<int>("TourId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UtcDateCreated")
@@ -171,6 +173,54 @@ namespace GoGo.Product.Infastructure.Data.Migrations
                     b.HasIndex("TourId");
 
                     b.ToTable("TourBookings");
+                });
+
+            modelBuilder.Entity("GoGo.Product.Domain.Entities.TourHasStartDate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("AdultPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ChildrenFrom2To5Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ChildrenFrom5To11Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("ChildrenUnder2Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RemainSlots")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UtcDateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTimeOffset?>("UtcDateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourHasStartDates");
                 });
 
             modelBuilder.Entity("GoGo.Product.Domain.Entities.TourRating", b =>
@@ -285,58 +335,21 @@ namespace GoGo.Product.Infastructure.Data.Migrations
                     b.ToTable("TourRequests");
                 });
 
-            modelBuilder.Entity("GoGo.Product.Domain.Entities.TourStartDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<decimal>("AdultPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("ChildrenFrom2To5Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("ChildrenFrom5To11Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("ChildrenUnder2Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RemainSlot")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<byte>("Status")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("TourId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UtcDateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTimeOffset?>("UtcDateUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TourId");
-
-                    b.ToTable("TourStartDates");
-                });
-
             modelBuilder.Entity("GoGo.Product.Domain.Entities.TourBooking", b =>
                 {
                     b.HasOne("GoGo.Product.Domain.Entities.Tour", "Tour")
                         .WithMany()
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("GoGo.Product.Domain.Entities.TourHasStartDate", b =>
+                {
+                    b.HasOne("GoGo.Product.Domain.Entities.Tour", "Tour")
+                        .WithMany("TourHasStartDates")
                         .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -355,22 +368,11 @@ namespace GoGo.Product.Infastructure.Data.Migrations
                     b.Navigation("Tour");
                 });
 
-            modelBuilder.Entity("GoGo.Product.Domain.Entities.TourStartDate", b =>
-                {
-                    b.HasOne("GoGo.Product.Domain.Entities.Tour", "Tour")
-                        .WithMany("TourStartDates")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tour");
-                });
-
             modelBuilder.Entity("GoGo.Product.Domain.Entities.Tour", b =>
                 {
-                    b.Navigation("TourRatings");
+                    b.Navigation("TourHasStartDates");
 
-                    b.Navigation("TourStartDates");
+                    b.Navigation("TourRatings");
                 });
 #pragma warning restore 612, 618
         }
