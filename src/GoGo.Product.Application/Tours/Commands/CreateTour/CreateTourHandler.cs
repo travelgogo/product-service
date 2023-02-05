@@ -1,23 +1,27 @@
 using MediatR;
 using GoGo.Product.Domain.Repos;
 using GoGo.Product.Domain.Entities;
+using GoGo.Product.Application.Shared.Abstraction;
+using GoGo.Product.Application.Shared.Constant;
 
 namespace GoGo.Product.Application.Tours.Commands.CreateTour
 {
-    public class CreateTourHandler : IRequestHandler<CreateTourRequest, CreateTourResponse>
+    class CreateTourHandler : IRequestHandler<CreateTourRequest, CreateTourResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public CreateTourHandler(IUnitOfWork unitOfWork)
+        private readonly IServiceBusDispatcher _dispatcher;
+        public CreateTourHandler(IUnitOfWork unitOfWork,IServiceBusDispatcher dispatcher)
         {
             _unitOfWork = unitOfWork;
+            _dispatcher = dispatcher;
         }
 
         public async Task<CreateTourResponse> Handle(CreateTourRequest request, CancellationToken cancellationToken)
         {
             var tour = MapTour(request);
-            await _unitOfWork.Repo<Tour>().AddAsync(tour);
-            await _unitOfWork.SaveChangeAsync(CancellationToken.None);
+            var res = await _unitOfWork.Repo<Tour>().AddWithReturn(tour);
+            await _dispatcher.SendAsync(ServiceBusTopic.CreateTour, res);
+            //await _unitOfWork.SaveChangeAsync(CancellationToken.None);
             return new CreateTourResponse(true, "Create tour successfully", 201);
         }
 

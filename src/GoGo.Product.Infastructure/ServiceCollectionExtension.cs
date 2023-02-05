@@ -21,7 +21,7 @@ namespace GoGo.Product.Infastructure
             services.AddSingleton(service =>
             {
                 var configuration = service.GetRequiredService<IConfiguration>();
-                var serviceBusSend = configuration["ServiceBusSend"];
+                var serviceBusSend = configuration["AzureServiceBus:ServiceBusSend"];
                 return new ServiceBusClient(serviceBusSend);
             });
             services.AddSingleton<IServiceBusDispatcher, ServiceBusDispatcher>();

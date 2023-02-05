@@ -12,9 +12,9 @@ namespace GoGo.Product.Infastructure.ServiceBus
             _serviceBusClient = serviceBusClient;
         }
 
-        public Task SendAsync<T>(T message) where T : BusEvent
+        public Task SendAsync<T>(string topicName, T message)
         {
-            var busSender = _serviceBusClient.CreateSender(message.TopicName);
+            var busSender = _serviceBusClient.CreateSender(topicName);
             return busSender.SendMessageAsync(new ServiceBusMessage(JsonConvert.SerializeObject(new { Message = message })));
         }
     }

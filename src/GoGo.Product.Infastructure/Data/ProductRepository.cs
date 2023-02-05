@@ -20,6 +20,13 @@ namespace GoGo.Product.Infastructure.Data
             await DbSet.AddAsync(entity);
         }
 
+        public async Task<TEntity> AddWithReturn(TEntity entity)
+        {
+            await DbSet.AddAsync(entity);
+            await _productDbContext.SaveChangesAsync();
+            return entity;
+        }
+
         public void Update(TEntity entity)
         {
             DbSet.Update(entity);

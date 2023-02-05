@@ -5,7 +5,7 @@
             "name": "Product API",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build.api",
+            "preLaunchTask": "api.build",
             "program": "${workspaceFolder}/src/GoGo.Product.Api/bin/Debug/net6.0/GoGo.Product.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/GoGo.Product.Api",
@@ -20,6 +20,12 @@
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
-        }
+        },
+        {
+            "name": "Product Function",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}"
+          }
     ]
 }
