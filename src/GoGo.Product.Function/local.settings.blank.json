@@ -1,0 +1,12 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+      "AzureWebJobsStorage": "",
+      "FUNCTIONS_WORKER_RUNTIME": "",
+      "ServiceBusListen": "",
+      "BlobStorage__Azure__AccountName": "",
+      "BlobStorage__Azure__AccountKey": "",
+      "BlobStorage__Azure__EndpointSuffix": "",
+      "BlobStorage__Azure__DefaultContainer": ""
+    }
+  }
