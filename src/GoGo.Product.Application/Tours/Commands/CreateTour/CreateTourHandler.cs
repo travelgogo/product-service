@@ -20,9 +20,13 @@ namespace GoGo.Product.Application.Tours.Commands.CreateTour
         {
             var tour = MapTour(request);
             var res = await _unitOfWork.Repo<Tour>().AddWithReturn(tour);
-            await _dispatcher.SendAsync(ServiceBusTopic.CreateTour, res);
-            //await _unitOfWork.SaveChangeAsync(CancellationToken.None);
-            return new CreateTourResponse(true, "Create tour successfully", 201);
+            await _unitOfWork.SaveChangeAsync(CancellationToken.None);
+            if(res.Id > 0)
+            {
+                await _dispatcher.SendAsync(ServiceBusTopic.CreateTour, res);
+                return new CreateTourResponse(true, "Create tour successfully", 201);
+            }
+            return new CreateTourResponse(true, "Cannot create tour.", 500);
         }
 
         private static Tour MapTour(CreateTourRequest request)

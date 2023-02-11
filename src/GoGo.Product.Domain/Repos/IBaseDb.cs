@@ -10,6 +10,6 @@ namespace GoGo.Product.Domain.Repos
         Task CommitTransactionAsync();
         bool SaveChange();
         Task<int> SaveChangeAsync();
-        Task<int> SaveChangeAsync(CancellationToken cancellationToken);
+        Task<bool> SaveChangeAsync(CancellationToken cancellationToken);
     }
 }
