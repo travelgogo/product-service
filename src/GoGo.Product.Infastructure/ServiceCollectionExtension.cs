@@ -2,10 +2,11 @@ using GoGo.Product.Infastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using GoGo.Product.Domain.Repos;
-using GoGo.Product.Application.Shared.Abstraction;
-using Azure.Messaging.ServiceBus;
-using GoGo.Product.Infastructure.ServiceBus;
+using GoGo.Infrastructure.Repository;
+using GoGo.Infrastructure.BlobStorage;
+using MassTransit;
+using GoGo.Product.Application.Tours.Commands.CreateTour;
+using MediatR;
 
 namespace GoGo.Product.Infastructure
 {
@@ -15,19 +16,24 @@ namespace GoGo.Product.Infastructure
         {
             services.AddDbContext<ProductDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("ProductConection"));
+                options.UseSqlServer(configuration["Azure:SqlServer:ProductConnection"]);
             });
-            
-            services.AddSingleton(service =>
+            services.AddRepository<ProductDbContext>();
+            services.AddBlobStorage();
+            services.AddMassTransit(config =>
             {
-                var configuration = service.GetRequiredService<IConfiguration>();
-                var serviceBusSend = configuration["AzureServiceBus:ServiceBusSend"];
-                return new ServiceBusClient(serviceBusSend);
+                config.UsingAzureServiceBus((context, cfg) =>
+                {
+                    cfg.Message<CreateTourEvent>(cfg =>
+                    {
+                        cfg.SetEntityName("pds.tour.created");
+                    });
+                    cfg.Publish<IBaseRequest>(x => x.Exclude = true);
+                    cfg.Publish<CreateTourResponse>(x => x.Exclude = true);
+                    cfg.Publish<CreateTourRequest>(x => x.Exclude = true);
+                    cfg.Host(configuration["Azure:ServiceBus:ServiceBusManage"]);
+                });
             });
-            services.AddSingleton<IServiceBusDispatcher, ServiceBusDispatcher>();
-            services.AddScoped(typeof(IRepository<>), typeof(ProductRepository<>));
-            services.AddScoped<IReadDb, ReadDb>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

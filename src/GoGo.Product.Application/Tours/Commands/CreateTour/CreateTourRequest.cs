@@ -1,6 +1,4 @@
 using MediatR;
-using System;
-using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 
 namespace GoGo.Product.Application.Tours.Commands.CreateTour
@@ -15,13 +13,10 @@ namespace GoGo.Product.Application.Tours.Commands.CreateTour
         public string? Note { get; set; }
         public int TourDay { get; set; }
         public decimal AdultPrice { get; set; }
-        // [JsonProperty("under2Price")]
         [JsonPropertyName("under2Price")]
         public decimal? ChildrenUnder2Price { get; set; }
-        // [JsonProperty("to5Price")]
         [JsonPropertyName("to5Price")]
         public decimal? ChildrenFrom2To5Price { get; set; }
-        // [JsonProperty("to10Price")]
         [JsonPropertyName("to11Price")]
         public decimal? ChildrenFrom5To11Price { get; set; }
         public decimal Price { get; set; }
@@ -31,13 +26,12 @@ namespace GoGo.Product.Application.Tours.Commands.CreateTour
         public int? TotalRating { get; set; }
         public string? MetaTitle { get; set; }
         public string? ThumbnailImage { get; set; }
+        public string? ContentImage { get; set; }
         public string? Avatar { get; set; }
         public string? SeoLink { get; set; }
-        // [JsonProperty("locationId")]
         [JsonPropertyName("locationId")]
         public int TravelLocationId { get; set; }
         public int Slot { get; set; }
-        // [JsonProperty("startDates")]
         [JsonPropertyName("startDates")]
         public TourStartDateItem[] TourStartDates { get; set; } = new List<TourStartDateItem>().ToArray();
     }

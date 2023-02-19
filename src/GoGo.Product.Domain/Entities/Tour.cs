@@ -22,6 +22,7 @@ namespace GoGo.Product.Domain.Entities
         public int? TotalRating { get; set; }
         public string? MetaTitle { get; set; }
         public string? ThumbnailImage { get; set; }
+        public string? ContentImage { get; set; }
         public string? Avatar { get; set; }
         public string? SeoLink { get; set; }
         public int Slot { get; set; }

@@ -1,25 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using GoGo.Product.Domain.Entities;
-using GoGo.Product.Domain.Repos;
 using MediatR;
+using GoGo.Infrastructure.Repository;
 
 namespace GoGo.Product.Application.Tours.Queries.GetTours
 {
     public class GetToursHandler : IRequestHandler<GetToursRequest, GetToursResponse>
     {
-        private readonly IUnitOfWork _writeDb;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetToursHandler(IUnitOfWork writeDb)
+        public GetToursHandler(IUnitOfWork unitOfWork)
         {
-            _writeDb = writeDb;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<GetToursResponse> Handle(GetToursRequest request, CancellationToken cancellationToken)
         {
-            var tours = _writeDb.Repo<Tour>().GetAll().ToList();
+            var tours = _unitOfWork.Repo<Tour>().GetAsync().ToList();
 
             var res = new GetToursResponse
             {
