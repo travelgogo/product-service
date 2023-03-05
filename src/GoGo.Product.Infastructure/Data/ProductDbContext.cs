@@ -31,6 +31,12 @@ namespace GoGo.Product.Infastructure.Data
         public DbSet<TourRating>? TourRatings { get; set; }
 
         public DbSet<TourRequest>? TourRequests { get; set; }
+        
+        public DbSet<TravelCategory>? TravelCategories { get; set; }
+
+        public DbSet<TravelRegion>? TravelRegions { get; set; }
+
+        public DbSet<TravelLocation>? TravelLocations { get; set; }
 
     }
 }

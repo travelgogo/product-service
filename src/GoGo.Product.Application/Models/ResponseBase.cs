@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace GoGo.Product.Application.Models
 {
-    public class BaseCommandResponse
+    public class ResponseBase
     {
-        public BaseCommandResponse(bool isSuccess, string message, int httpStatusCode)
+        public ResponseBase(){}
+        public ResponseBase(bool isSuccess, string message, int httpStatusCode)
         {
             IsSuccess = isSuccess;
             Message = message;
@@ -16,6 +12,6 @@ namespace GoGo.Product.Application.Models
         public bool IsSuccess { get; set; } = true;
         public string? Message { get; set; }
         public int HttpStatusCode {get; set;}
-        
+        public virtual object? Data { get; set; }
     }
 }

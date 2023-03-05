@@ -35,5 +35,15 @@ namespace GoGo.Product.Infastructure
                 });
             });
         }
+
+        public static void AddFuncInfastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<ProductDbContext>(options =>
+            {
+                options.UseSqlServer(configuration["Azure:SqlServer:ProductConnection"]);
+            });
+            services.AddRepository<ProductDbContext>();
+            services.AddBlobStorage();
+        }
     }
 }

@@ -47,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapAppRouting();
+app.MapApiRouting();
 
 app.Run();

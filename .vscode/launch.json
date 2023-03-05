@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "api.build",
-            "program": "${workspaceFolder}/src/GoGo.Product.Api/bin/Debug/net6.0/GoGo.Product.Api.dll",
+            "program": "${workspaceFolder}/src/GoGo.Product.Api/bin/Debug/net7.0/GoGo.Product.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/GoGo.Product.Api",
             "stopAtEntry": false,

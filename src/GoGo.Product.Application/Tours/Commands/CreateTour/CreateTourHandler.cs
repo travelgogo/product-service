@@ -59,7 +59,7 @@ namespace GoGo.Product.Application.Tours.Commands.CreateTour
                 await _publishEndpoint.Publish(message, cancellationToken);
                 return new CreateTourResponse(true, "Create tour successfully!", 201);
             }
-
+            _logger.LogError("Create not create tour: ", tour);
             return new CreateTourResponse(true, "Cannot create tour.", 500);
         }
 
