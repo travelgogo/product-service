@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace GoGo.Product.Application.Tours.Queries.GetTourById
 {
-    public class GetTourByIdResponse
+    public class Response
     {
         public string? Code { get; set; }
         public string? Name { get; set; }
@@ -37,7 +37,8 @@ namespace GoGo.Product.Application.Tours.Queries.GetTourById
 
     public class TourStartDateItem
     {
-        public DateTime StartDate { get; set; }
+        public byte No { get; set; }
+        public string StartDate { get; set; } = string.Empty;
         public decimal AdultPrice { get; set; }
         [JsonPropertyName("under2Price")]
         public decimal? ChildrenUnder2Price { get; set; }

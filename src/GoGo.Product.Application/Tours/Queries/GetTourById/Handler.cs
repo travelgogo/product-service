@@ -4,18 +4,18 @@ using MediatR;
 
 namespace GoGo.Product.Application.Tours.Queries.GetTourById
 {
-    public class GetTourByIdHandler : IRequestHandler<GetTourByIdRequest, GetTourByIdResponse?>
+    public class Handler : IRequestHandler<Request, Response?>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetTourByIdHandler(IUnitOfWork unitOfWork)
+        public Handler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<GetTourByIdResponse?> Handle(GetTourByIdRequest request, CancellationToken cancellationToken)
+        public async Task<Response?> Handle(Request request, CancellationToken cancellationToken)
         {
-            var tour = await _unitOfWork.Repo<Tour>().GetAsync(request.Id);
+            var tour = await _unitOfWork.Repo<Tour>().GetAsync(request.Id, new string[] {"TourStartDates"});
             if(tour != null)
             {
                 return MapTour(tour);
@@ -23,9 +23,10 @@ namespace GoGo.Product.Application.Tours.Queries.GetTourById
             return null;
         }
 
-        private static GetTourByIdResponse MapTour(Tour request)
+        private static Response MapTour(Tour request)
         {
-            return new GetTourByIdResponse
+            byte startDateNo = 1;
+            return new Response
             {
                 AdultPrice = request.AdultPrice,
                 Avatar = request.Avatar,
@@ -44,6 +45,7 @@ namespace GoGo.Product.Application.Tours.Queries.GetTourById
                 SeoLink = request.SeoLink,
                 Status = request.Status,
                 ThumbnailImage = request.ThumbnailImage,
+                ContentImage = request.ContentImage,
                 TotalRating = request.TotalRating,
                 TourDay = request.TourDay,
                 TravelLocationId = request.TravelLocationId,
@@ -51,9 +53,10 @@ namespace GoGo.Product.Application.Tours.Queries.GetTourById
                 Schedule = request.Schedule,
                 TourStartDates =  request.TourStartDates?.Select(x => new TourStartDateItem
                 {
+                    No = startDateNo++,
                     // Status = x.Status,
                     Description = x.Description,
-                    StartDate = x.StartDate,
+                    StartDate = x.StartDate.ToString("yyyy-MM-dd HH:mm"),
                     AdultPrice = x.AdultPrice,
                     ChildrenFrom2To5Price = x.ChildrenFrom2To5Price,
                     ChildrenFrom5To11Price = x.ChildrenFrom5To11Price,
