@@ -20,6 +20,11 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    
+    - task: NuGetAuthenticate@1
+      inputs:
+        nuGetServiceConnections: 'GitHub TravelGoGo Nuget Packages'
+
     - task: Docker@2
       displayName: Build an image
       inputs:
