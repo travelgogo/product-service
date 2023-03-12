@@ -1,8 +1,4 @@
 using GoGo.Product.Api.Endpoints;
-using GoGo.Product.Application.Tours.Commands.CreateTour;
-using GoGo.Product.Application.Tours.Queries.GetTours;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 
 namespace GoGo.Product.Api
 {
@@ -12,6 +8,7 @@ namespace GoGo.Product.Api
         {
             app.MapTourEndpoints();
             app.MapLocalEndpoints();
+            app.MapGet("/", () => "Product service is running...");
         }
     }
 }

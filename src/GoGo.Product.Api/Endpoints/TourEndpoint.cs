@@ -27,7 +27,7 @@ namespace GoGo.Product.Api.Endpoints
                 return Results.Ok(res);
             });
 
-            app.MapPost("tours", [Authorize] async (CreateTourRequest request, IMediator _mediator, ILogger _logger) => 
+            app.MapPost("tours", [Authorize] async (CreateTourRequest request, IMediator _mediator) => 
             {
                 try
                 {
@@ -40,8 +40,7 @@ namespace GoGo.Product.Api.Endpoints
                 }
                 catch(Exception ex)
                 {
-                    _logger.LogError(ex, "Cannot create tour!");
-                    return TypedResults.StatusCode(500);
+                    return Results.Problem(ex.Message, statusCode: 500);
                 }
                 
             });
@@ -49,7 +48,7 @@ namespace GoGo.Product.Api.Endpoints
             app.MapPut("tours/{id}", [Authorize("HasAdminRole")] async (UpdateTourRequest request, int id, IMediator _mediator) => 
             {
                 var res = await _mediator.Send(request);
-                return TypedResults.Ok(res);
+                return Results.Ok(res);
             });
             
             app.MapDelete("tours/{id}", [Authorize("HasAdminRole")] async (int id, IMediator _mediator) => 
