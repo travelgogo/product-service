@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gogoproductapi
+  labels:
+    app: gogoproductapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: gogoproductapi
+  template:
+    metadata:
+      labels:
+        app: gogoproductapi
+        service: gogoproductapi
+    spec:
+      containers:
+        - name: gogoproductapi
+          image: gogoacr.azurecr.io/gogoproductapi:latest
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gogoproductapi
+  labels:
+    app: gogoproductapi
+    service: gogoproductapi
+spec:
+  ports:
+    - port: 7100
+      targetPort: 7100
+      protocol: TCP
+  selector:
+    service: gogoproductapi
